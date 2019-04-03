@@ -18,7 +18,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Nombre de Habitacion</label>
-                <input type="text" name="nombrehab" ng-model="habitacion.nombre" class="form-control" placeholder="nombre">
+                <input type="text" name="nombrehab" ng-model="habitacion.nombrehab" class="form-control" placeholder="nombre">
             </div>
 
             <div class="form-group col-md-6">
@@ -46,10 +46,10 @@
             </div>
 
             <div class="form-group col-md-12">
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" ng-click="guardarhabitacion()"  class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-danger">Eliminar</button>
-                <button type="button" class="btn btn-secondary">Mostrar</button>
-
+                <button type="button" class="btn btn-success">Mostrar</button>
+                <button type="button" class="btn btn-outline-secondary" style="float: right"><a href="{{url('/')}}">Regresar</a></button>
             </div>
         </div>
     </div>
@@ -60,8 +60,18 @@
 </body>
 </html>
 <script>
-    var app = angular.module('app', []);
-    app.controller('ctrl', function ($scope) {
+    var app = angular.module('app', []).controller('ctrl', function ($scope , $http) {
+
+        $scope.guardarhabitacion = function () {
+            console.log($scope.habitacion);
+            $http.post('/saveHabitacion', $scope.habitacion).then(
+                function (response) {
+                    console.log(response.status);
+                    alert("la habitacion fue dada de alta con exito");
+                    location.reload();
+                })
+        }
+
 
     });
 </script>

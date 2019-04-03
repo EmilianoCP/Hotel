@@ -14,4 +14,6 @@
 Route::get('/', function () {
     return view('Hotel');
 });
+
 Route::get('/habitaciones', 'habitaciones@index');
+Route::post('/saveHabitacion', 'habitaciones@store');
