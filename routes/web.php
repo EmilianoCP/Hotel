@@ -16,5 +16,6 @@ Route::get('/', function () {
 });
 
 Route::get('/habitaciones', 'habitaciones@index');
+Route::get('/reservaciones', 'reservaciones@index');
 Route::get('/showHabitaciones', 'habitaciones@indexHabitaciones');
 Route::post('/saveHabitacion', 'habitaciones@store');

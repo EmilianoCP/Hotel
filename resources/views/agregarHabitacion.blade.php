@@ -9,7 +9,7 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Habitaciones</title>
 
-    <style type="text/css">
+    <!--<style type="text/css">
         a:link
         {
             text-decoration:none;
@@ -28,8 +28,8 @@
             text-decoration-color: white;
             color: #ffffff;
         }
-    </style>
-
+    </style>-->
+    <link type="text/css" rel="stylesheet" href="{{asset('css/styles.css')}}">
 </head>
 <body ng-controller="ctrl">
 

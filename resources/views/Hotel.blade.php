@@ -87,7 +87,7 @@
 
                 <div class="links">
                     <a href="{{url('/habitaciones')}}">Agregar Habitaciones</a>
-                    <a href="/">Reservaciones</a>
+                    <a href="{{url('/reservaciones')}}">Reservaciones</a>
 
                 </div>
             </div>

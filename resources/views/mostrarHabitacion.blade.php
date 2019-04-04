@@ -27,6 +27,8 @@
                 <th>CANTIDAD CAMAS</th>
                 <th>CUARTOS</th>
                 <th>PRECIO</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -48,6 +50,7 @@
             @endforeach
             </tbody>
         </table>
+        <button type="button" class="btn btn-secondary" style="float: right"><a href="{{url('/habitaciones')}}">Regresar</a></button>
 
     </div>
 </form>
