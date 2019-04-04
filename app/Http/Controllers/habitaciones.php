@@ -17,6 +17,12 @@ class habitaciones extends Controller
     {
         return view('agregarHabitacion');
     }
+    public function indexEliminar()
+    {
+        $habitaciones = new habitacion();
+        $datos = $habitaciones::all();
+        return view('mostrarHabitacion', compact('datos'));
+    }
 
     /**
      * Show the form for creating a new resource.
