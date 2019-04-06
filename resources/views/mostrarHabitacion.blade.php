@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Habitaciones</title>
+    <link type="text/css" rel="stylesheet" href="{{asset('css/styles.css')}}">
 </head>
 <body ng-controller="ctrl">
 
@@ -18,7 +19,7 @@
             <h1>Habitaciones</h1>
         </div>
         <br><br>
-        <table class="table table-hover">
+        <table class="table table-hover" ng-show="mostrarbaja == false">
             <thead>
             <tr>
                 <th>ID</th>
@@ -41,16 +42,33 @@
                     <td>{{$habitacion->cantcuartos}}</td>
                     <td>${{$habitacion->preciohab}}</td>
                     <td>
-                        <button class="btn btn-danger" ng-click="eliminar({{$habitacion->id}})">Eliminar</button>
+                        <button class="btn btn-danger" ng-click="mandarBaja({{$habitacion}})">Eliminar</button>
                     </td>
                     <td>
-                        <button class="btn btn-warning" ng-click="eliminar({{$habitacion}})">Modificar</button>
+                        <button class="btn btn-warning" ng-click="modificar({{$habitacion}})">Modificar</button>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        <button type="button" class="btn btn-secondary" style="float: right"><a href="{{url('/habitaciones')}}">Regresar</a></button>
+        <!-- PARTE DAR DE BAJA -->
+        <div ng-show="mostrarbaja == true">
+            <div class="form-group col-md-2">
+                <label>Habitacion</label>
+                <input type="text" ng-model="baja.nombrehab" class="form-control" disabled>
+            </div>
+            <div class="form-group col-md-6">
+                <label>descripcion</label>
+                <textarea class="form-control" ng-model="baja.descripcion" id="exampleFormControlTextarea1"
+                          rows="3"></textarea>
+                <br>
+                <button type="button" ng-click="darBaja()" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div>
+        <!-- FIN DE PARTE DAR DE BAJA -->
+
+        <button type="button" class="btn btn-secondary" style="float: right"><a
+                    href="{{url('/habitaciones')}}">Regresar</a></button>
 
     </div>
 </form>
@@ -60,7 +78,30 @@
 </body>
 </html>
 <script>
-    var app = angular.module('app', []).controller('ctrl', function ($scope , $http) {
+    var app = angular.module('app', []).controller('ctrl', function ($scope, $http) {
+        $scope.mostrarbaja = false;
+
+        $scope.mandarBaja = function (datos) {
+            $scope.mostrarbaja = true;
+            $scope.baja = datos;
+        }
+
+        $scope.darBaja = function () {
+            //console.log($scope.baja);
+            if (confirm("¿Desea continuar?")) {
+                $scope.baja.cantcuartos--;
+                $http.post('/darBaja/' + $scope.baja.id, $scope.baja).then(
+                    function (response) {
+                        console.log(response.status);
+                        alert("baja por:" + $scope.baja.descripcion);
+                        location.reload();
+                    }, function (errorResponse) {
+
+                    }
+                )
+            }
+
+        }
 
     });
 </script>
