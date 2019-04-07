@@ -85,6 +85,12 @@ class habitaciones extends Controller
     public function update(Request $request, $id)
     {
         //
+        $habitacion = habitacion::find($id);
+        $habitacion->cantcuartos = $request->cantcuartos;
+        $habitacion->cantcamas = $request->cantcamas;
+        $habitacion->preciohab = $request->preciohab;
+
+        $habitacion->save();
     }
 
     /**

@@ -19,7 +19,7 @@
             <h1>Habitaciones</h1>
         </div>
         <br><br>
-        <table class="table table-hover" ng-show="mostrarbaja == false">
+        <table class="table table-hover" ng-show="mostrartabla == true">
             <thead>
             <tr>
                 <th>ID</th>
@@ -45,12 +45,44 @@
                         <button class="btn btn-danger" ng-click="mandarBaja({{$habitacion}})">Eliminar</button>
                     </td>
                     <td>
-                        <button class="btn btn-warning" ng-click="modificar({{$habitacion}})">Modificar</button>
+                        <button class="btn btn-warning" ng-click="mandarDatos({{$habitacion}})">Modificar</button>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+
+        <div class="form-row" ng-show="mostrarUpdate == true">
+
+            <div class="form-group col-md-2">
+                <label>Habitacion</label>
+                <input type="text" ng-model="hab.nombrehab" class="form-control" disabled>
+            </div>
+            <div class="form-group col-md-12">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Cantidad de Camas</label>
+                <input type="number" name="cantcamas" ng-model="hab.cantcamas" class="form-control"
+                       placeholder="camas">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Cantidad de Cuartos</label>
+                <input type="number" name="cantcuartos" ng-model="hab.cantcuartos" class="form-control"
+                       placeholder="cuartos">
+            </div>
+
+            <div class="form-group col-md-2">
+                <label>Precio</label>
+                <input type="number" name="precio" ng-model="hab.preciohab" class="form-control"
+                       placeholder="precio">
+                <br>
+                <button type="button" ng-click="actualizarHab()" class="btn btn-primary">Guardar</button>
+            </div>
+            <br>
+        </div>
+
         <!-- PARTE DAR DE BAJA -->
         <div ng-show="mostrarbaja == true">
             <div class="form-group col-md-2">
@@ -69,6 +101,9 @@
 
         <button type="button" class="btn btn-secondary" style="float: right"><a
                     href="{{url('/habitaciones')}}">Regresar</a></button>
+        <!--<select ng-model="hola.xx" ng-options="x.nombrehab for x in data" class="form-control">
+            <option value="">Selecciona una Habitacion</option>
+        </select>-->
 
     </div>
 </form>
@@ -79,12 +114,24 @@
 </html>
 <script>
     var app = angular.module('app', []).controller('ctrl', function ($scope, $http) {
-        $scope.mostrarbaja = false;
+        $scope.mostrartabla = true;
+        $scope.habitaciones;
+        //$scope.data = {!! json_encode($datos) !!};
 
         $scope.mandarBaja = function (datos) {
             $scope.mostrarbaja = true;
             $scope.baja = datos;
         }
+        $scope.mandarDatos = function (datos) {
+            //$scope.mostrarbaja = true;
+            $scope.mostrarUpdate = true;
+            //$scope.mostrartabla = false;
+            $scope.mostrarbaja = false;
+            console.log(datos);
+            $scope.hab = datos;
+            $scope.habitaciones = $scope.hab.cantcuartos;
+        }
+
 
         $scope.darBaja = function () {
             //console.log($scope.baja);
@@ -99,6 +146,26 @@
 
                     }
                 )
+            }
+
+        }
+        $scope.actualizarHab = function () {
+            console.log($scope.habitaciones);
+            if ($scope.hab.cantcuartos < $scope.habitaciones) {
+                alert("la cantidad de cuartos es menor a la que se tenia")
+            } else {
+
+                if (confirm("¿Desea continuar?")) {
+                    $http.post('/actualizarHab/' + $scope.hab.id, $scope.hab).then(
+                        function (response) {
+                            console.log(response.status);
+                            alert("se a actualizado la habitacion: " + $scope.hab.nombrehab);
+                            location.reload();
+                        }, function (errorResponse) {
+
+                        }
+                    )
+                }
             }
 
         }
