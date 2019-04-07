@@ -43,7 +43,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Nombre de Habitacion</label>
-                <select ng-model="habitacion.nombrehab" ng-options="x.tipo for x in tipohab" class="form-control">
+                <select ng-model="habitacion.nombrehab" ng-options="x.tipo for x in tipohab" class="form-control" required>
                     <option value="" requi>Selecciona una Habitacion</option>
                 </select>
                 <span ng-show="frmLibro.select.$dirty && frmLibro.select.$error.required">Campo requerido</span>
@@ -52,7 +52,7 @@
 
             <div class="form-group col-md-6">
                 <label>Tipo de Cama</label>
-                <select ng-model="habitacion.tipocama" ng-options="x.tipo for x in camas" class="form-control">
+                <select ng-model="habitacion.tipocama" ng-options="x.tipo for x in camas" class="form-control" required>
                     <option value="">Selecciona una cama</option>
                 </select>
                 <span ng-show="frmLibro.select.$dirty && frmLibro.select.$error.required">Campo requerido</span>
@@ -103,7 +103,12 @@
             {id: 4, tipo: "triple"},
             {id: 5, tipo: "suite"},
             {id: 6, tipo: "presidencial"}
+
         ];
+        /*if (tipohab.id[1].selected == true){
+            alert('Opción no disponible');
+            tipohab.id[0].selected = true;
+        }*/
 
         $scope.camas = [
             {id: 1, tipo: "individual"},
