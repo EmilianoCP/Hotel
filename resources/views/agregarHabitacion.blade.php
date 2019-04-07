@@ -44,8 +44,9 @@
             <div class="form-group col-md-6">
                 <label>Nombre de Habitacion</label>
                 <select ng-model="habitacion.nombrehab" ng-options="x.tipo for x in tipohab" class="form-control">
-                    <option value="">Selecciona una Habitacion</option>
+                    <option value="" requi>Selecciona una Habitacion</option>
                 </select>
+                <span ng-show="frmLibro.select.$dirty && frmLibro.select.$error.required">Campo requerido</span>
                 <!--<input type="text" name="nombrehab" ng-model="habitacion.nombrehab" class="form-control" placeholder="nombre">-->
             </div>
 
@@ -54,6 +55,7 @@
                 <select ng-model="habitacion.tipocama" ng-options="x.tipo for x in camas" class="form-control">
                     <option value="">Selecciona una cama</option>
                 </select>
+                <span ng-show="frmLibro.select.$dirty && frmLibro.select.$error.required">Campo requerido</span>
                 <!--<input type="text" name="cama" ng-model="habitacion.tipocama" class="form-control"
                        placeholder="tipo de cama">-->
             </div>
@@ -61,23 +63,26 @@
             <div class="form-group col-md-6">
                 <label>Cantidad de Camas</label>
                 <input type="number" name="cantcamas" ng-model="habitacion.cantcamas" class="form-control"
-                       placeholder="camas">
+                       placeholder="camas" required>
+                <span ng-show="frmLibro.cantcamas.$dirty && frmLibro.cantcamas.$error.required" class="danger">Campo requerido*</span>
             </div>
 
             <div class="form-group col-md-6">
                 <label>Cantidad de Cuartos</label>
                 <input type="number" name="cantcuartos" ng-model="habitacion.cantcuartos" class="form-control"
-                       placeholder="cuartos">
+                       placeholder="cuartos" required>
+                <span ng-show="frmLibro.cantcuartos.$dirty && frmLibro.cantcuartos.$error.required" class="danger">Campo requerido*</span>
             </div>
 
             <div class="form-group col-md-2">
                 <label>Precio por Habitacion</label>
                 <input type="number" name="precio" ng-model="habitacion.precio" class="form-control"
-                       placeholder="precio">
+                       placeholder="precio" required>
+                <span ng-show="frmLibro.precio.$dirty && frmLibro.precio.$error.required" class="danger">Campo requerido*</span>
             </div>
 
             <div class="form-group col-md-12">
-                <button type="button" ng-click="guardarhabitacion()"  class="btn btn-primary">Guardar</button>
+                <button type="button" ng-click="guardarhabitacion()"  class="btn btn-primary" ng-disabled="!frmLibro.$valid">Guardar</button>
                 <button type="button" class="btn btn-success"><a href="{{url('/showHabitaciones')}}">Mostrar Habitaciones</a></button>
                 <button type="button" class="btn btn-secondary" style="float: right"><a href="{{url('/')}}">Regresar</a></button>
             </div>
@@ -108,6 +113,7 @@
         ];
 
         $scope.guardarhabitacion = function () {
+
             $scope.habitacion.nombrehab = $scope.habitacion.nombrehab.tipo;
             $scope.habitacion.tipocama = $scope.habitacion.tipocama.tipo;
             console.log($scope.habitacion);
@@ -118,7 +124,6 @@
                     location.reload();
                 })
         }
-
 
 
     });
