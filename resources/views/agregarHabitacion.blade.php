@@ -9,26 +9,6 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Habitaciones</title>
 
-    <!--<style type="text/css">
-        a:link
-        {
-            text-decoration:none;
-            text-decoration-color: white;
-            color: #ffffff;
-        }
-        a:hover
-        {
-            text-decoration:none;
-            text-decoration-color: white;
-            color: #ffffff;
-        }
-        a
-        {
-            text-decoration:none;
-            text-decoration-color: white;
-            color: #ffffff;
-        }
-    </style>-->
     <link type="text/css" rel="stylesheet" href="{{asset('css/styles.css')}}">
 </head>
 <body ng-controller="ctrl">
@@ -56,8 +36,7 @@
                     <option value="">Selecciona una cama</option>
                 </select>
                 <span ng-show="frmLibro.select.$dirty && frmLibro.select.$error.required">Campo requerido</span>
-                <!--<input type="text" name="cama" ng-model="habitacion.tipocama" class="form-control"
-                       placeholder="tipo de cama">-->
+
             </div>
 
             <div class="form-group col-md-6">
@@ -96,7 +75,8 @@
 </html>
 <script>
     var app = angular.module('app', []).controller('ctrl', function ($scope , $http) {
-
+        $scope.data = {!! json_encode($datos) !!};
+        console.log($scope.data);
         $scope.tipohab = [
             {id: 1, tipo: "individual"},
             {id: 2, tipo: "doble"},
@@ -105,17 +85,20 @@
             {id: 6, tipo: "presidencial"}
 
         ];
-        /*if (tipohab.id[1].selected == true){
-            alert('Opción no disponible');
-            tipohab.id[0].selected = true;
-        }*/
-
         $scope.camas = [
             {id: 1, tipo: "individual"},
             {id: 2, tipo: "matrimonial"},
             {id: 4, tipo: "queen size"},
             {id: 5, tipo: "king size"}
         ];
+
+        for(var x=0; x < $scope.data.length; x++){
+            for(var y=0; y < $scope.tipohab.length; y++){
+                if($scope.data[x].nombrehab == $scope.tipohab[y].tipo){
+                    $scope.tipohab.splice(y,1);
+                }
+            }
+        }
 
         $scope.guardarhabitacion = function () {
 
