@@ -123,7 +123,6 @@
 
 
             $scope.guardarReservacion = function () {
-            $scope.reservacion.edad=$scope.calcEdad($("#fechaNac").val());
             $scope.reservacion.habitacion=$scope.reservacion.nombrehab.nombrehab;
             $scope.reservacion.id_habitaciones=$scope.reservacion.nombrehab.id;
             $http.post('/saveReservaciones', $scope.reservacion).then(function(response) {
@@ -143,19 +142,5 @@
                  }
             );
         }
-        $scope.formatearFecAMD = function(fecha, separador) {
-            return fecha.substr(0, 4) + separador + fecha.substr(5, 2) + separador + fecha.substr(8, 2);
-        };
-        $scope.calcEdad = function(birthday) {
-            var date = $scope.formatearFec(birthday, "/");
-            var birthday_arr = date.split("/");
-            var birthday_date = new Date(birthday_arr[2], birthday_arr[1] - 1, birthday_arr[0]);
-            var ageDifMs = Date.now() - birthday_date.getTime();
-            var ageDate = new Date(ageDifMs);
-            return Math.abs(ageDate.getUTCFullYear() - 1970);
-        };
-        $scope.formatearFec = function(fecha, separador) {
-            return fecha.substr(5, 2) + separador + fecha.substr(8, 2) + separador + fecha.substr(0, 4);
-        };
     });
 </script>

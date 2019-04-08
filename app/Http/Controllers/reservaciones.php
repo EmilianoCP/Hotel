@@ -46,7 +46,9 @@ class reservaciones extends Controller
         $datos->nombre=$request->input('nombre');
         $datos->apellido=$request->input('apellido');
         $datos->costo=$request->input('costo');
-        $datos->edad=$request->input('edad');
+        $fecha = time() - strtotime($request->input('fechanac'));
+        $edad = floor($fecha / 31556926);
+        $datos->edad=$edad;
         $datos->id_habitaciones=$request->input('id_habitaciones');
         $datos->fechanac=$request->input('fechanac');
         $datos->inicioreserva=$request->input('inicioreserva');
