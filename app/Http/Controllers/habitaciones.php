@@ -25,6 +25,12 @@ class habitaciones extends Controller
         $datos = $habitaciones::all();
         return view('mostrarHabitacion', compact('datos'));
     }
+    public function indexReservaciones()
+    {
+        $habitaciones = new habitacion();
+        $datos = $habitaciones::all();
+        return view('altaReservas', compact('datos'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -91,7 +97,6 @@ class habitaciones extends Controller
         $habitacion->cantcuartos = $request->cantcuartos;
         $habitacion->cantcamas = $request->cantcamas;
         $habitacion->preciohab = $request->preciohab;
-
         $habitacion->save();
     }
 

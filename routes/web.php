@@ -16,8 +16,10 @@ Route::get('/', function () {
 });
 
 Route::get('/habitaciones', 'habitaciones@index');
-Route::get('/reservaciones', 'reservaciones@index');
+Route::get('/reservaciones', 'habitaciones@indexReservaciones');
 Route::get('/showHabitaciones', 'habitaciones@indexHabitaciones');
+Route::get('/showReservaciones', 'reservaciones@indexReservaciones');
 Route::post('/saveHabitacion', 'habitaciones@store');
+Route::post('/saveReservaciones','reservaciones@store');
 Route::post('/darBaja/{id}', 'bajas@store');
 Route::post('/actualizarHab/{id}', 'habitaciones@update');

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\habitacion;
 use Illuminate\Http\Request;
+use App\reservacion;
 
 class reservaciones extends Controller
 {
@@ -13,8 +15,13 @@ class reservaciones extends Controller
      */
     public function index()
     {
-        //
-        return view('altaReservas');
+
+    }
+    public function indexReservaciones()
+    {
+        $reservaciones = new reservacion();
+        $datos = $reservaciones::all();
+        return view('mostrarReservacion', compact('datos'));
     }
 
     /**
@@ -35,7 +42,17 @@ class reservaciones extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datos=new reservacion();
+        $datos->nombre=$request->input('nombre');
+        $datos->apellido=$request->input('apellido');
+        $datos->costo=$request->input('costo');
+        $datos->edad=$request->input('edad');
+        $datos->id_habitaciones=$request->input('id_habitaciones');
+        $datos->fechanac=$request->input('fechanac');
+        $datos->inicioreserva=$request->input('inicioreserva');
+        $datos->finreserva=$request->input('finreserva');
+        $datos->habitacionName=$request->input('habitacion');
+        $datos->save();
     }
 
     /**
