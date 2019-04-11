@@ -99,6 +99,13 @@ class habitaciones extends Controller
         $habitacion->preciohab = $request->preciohab;
         $habitacion->save();
     }
+    public function updateCuartos(Request $request, $id)
+    {
+        //
+        $habitaciones = habitacion::find($id);
+        $habitaciones->cantcuartos = $request->cantcuartos;
+        $habitaciones->save();
+    }
 
     /**
      * Remove the specified resource from storage.

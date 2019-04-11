@@ -21,13 +21,13 @@
         </div>
         <br><br>
         <div class="form-row">
-            <dxiv class="form-group col-md-6">
+            <div class="form-group col-md-6">
                 <label>Nombre</label>
                 <input id="nombre" type="text" name="nombre" ng-pattern ="/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/" ng-model="reservacion.nombre"
                        class="form-control" placeholder="nombre" required>
                 <span ng-show="(forms.frmReserva.nombre.$dirty && forms.frmReserva.nombre.$error.required) ||
                 (forms.frmReserva.nombre.$dirty && !forms.frmReserva.nombre.$valid)">Nombre invalido.</span>
-            </dxiv>
+            </div>
             <div class="form-group col-md-6">
                 <label>Apellido</label>
                 <input id="apellido" type="text" name="apellido" ng-pattern ="/^[a-zA-ZáéíóúÁÉÍÓÚ\s]*$/" ng-model="reservacion.apellido"
@@ -117,6 +117,7 @@
             let fecha2 = moment($scope.reservacion.finreserva);
             $scope.diferencia=fecha2.diff(fecha1, 'days');
             if((String($scope.diferencia)!="NaN" && $scope.diferencia>1)&& $scope.reservacion.nombrehab!=undefined)
+                console.log($scope.diferencia);
                 $scope.reservacion.costo=$scope.diferencia*$scope.reservacion.nombrehab.preciohab;
         }
 
@@ -129,6 +130,7 @@
                 $scope.reservacion.nombrehab.cantcuartos=$scope.reservacion.nombrehab.cantcuartos-1;
                 $http.post('/actualizarHab/' + $scope.reservacion.nombrehab.id, $scope.reservacion.nombrehab).then(
                     function (response) {
+                        console.log(response.status);
                         $scope.reservacion = {};
                         $scope.forms.frmReserva.$setPristine();
                     },

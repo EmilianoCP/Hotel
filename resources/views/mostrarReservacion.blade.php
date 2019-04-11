@@ -21,18 +21,18 @@
         <br><br>
         <table class="table table-hover" ng-show="mostrartabla == true">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>NOMBRE</th>
-                    <th>APELLIDO</th>
-                    <th>EDAD</th>
-                    <th>TIPO DE HABITACION</th>
-                    <th>ENTRADA</th>
-                    <th>SALIDA</th>
-                    <th>TOTAL</th>
-                    <th></th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th>APELLIDO</th>
+                <th>EDAD</th>
+                <th>TIPO DE HABITACION</th>
+                <th>ENTRADA</th>
+                <th>SALIDA</th>
+                <th>TOTAL</th>
+                <th></th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
             @foreach($datos as $reservacion)
@@ -56,55 +56,62 @@
             </tbody>
         </table>
 
-        <div class="form-row" ng-show="mostrarUpdate == true">
-
-            <div class="form-group col-md-2">
-                <label>Reservacion</label>
-                <input type="text" ng-model="hab.nombrehab" class="form-control" disabled>
+        <div ng-show="mostrarUpdate == true">
+            <div class="form-group col-md-4">
+                <input type="text" ng-model="res.habitacionName" class="form-control" disabled>
             </div>
-            <div class="form-group col-md-12">
-            </div>
-
             <div class="form-group col-md-6">
-                <label>Cantidad de Camas</label>
-                <input type="number" name="cantcamas" ng-model="hab.cantcamas" class="form-control"
-                       placeholder="camas">
+                <label>Habitacion</label>
+                <select ng-model="res.habName" ng-change="calculoCosto()"  ng-options="x.nombrehab for x in habs" class="form-control" required>
+                    <option value="">selecciona una habitacion</option>
+                </select>
+                <!--<input type="text" ng-model="res.habitacionName" class="form-control" disabled>-->
             </div>
-
-            <div class="form-group col-md-6">
-                <label>Cantidad de Cuartos</label>
-                <input type="number" name="cantcuartos" ng-model="hab.cantcuartos" class="form-control"
-                       placeholder="cuartos">
+            <!--<div class="form-row">-->
+            <div class="form-group col-md-4">
+                <label>fecha inicio</label>
+                <input type="date" ng-model="res.inicioreserva" class="form-control" disabled>
             </div>
-
+            <div class="form-group col-md-4">
+                <label>fecha fin</label>
+                <input type="date" min="@{{minn}}" ng-change="calculoCosto()" ng-model="res.finreserva" class="form-control">
+            </div>
+            <!--</div>-->
             <div class="form-group col-md-2">
-                <label>Precio</label>
-                <input type="number" name="precio" ng-model="hab.preciohab" class="form-control"
-                       placeholder="precio">
+                <label>costo</label>
+                <input type="text" ng-model="res.costo" class="form-control" disabled>
                 <br>
-                <button type="button" ng-click="actualizarHab()" class="btn btn-primary">Guardar</button>
+                <button type="button" ng-click="updateRes()" class="btn btn-primary">Aceptar</button>
             </div>
-            <br>
         </div>
 
         <!-- PARTE DAR DE BAJA -->
         <div ng-show="mostrarbaja == true">
             <div class="form-group col-md-2">
                 <label>Habitacion</label>
-                <input type="text" ng-model="baja.nombrehab" class="form-control" disabled>
+                <input type="text" ng-model="baja_r.habitacionName" class="form-control" disabled>
             </div>
-            <div class="form-group col-md-6">
-                <label>descripcion</label>
-                <textarea class="form-control" ng-model="baja.descripcion" id="exampleFormControlTextarea1"
-                          rows="3"></textarea>
+            <!--<div class="form-row">-->
+            <div class="form-group col-md-4">
+                <label>fecha inicio</label>
+                <input type="date" ng-model="baja_r.inicioreserva" class="form-control" disabled>
+            </div>
+            <div class="form-group col-md-4" ng-show="fechafin == false">
+                <label>fecha fin</label>
+                <input type="date" ng-model="baja_r.finreserva" class="form-control" disabled>
+            </div>
+            <!--</div>-->
+            <div class="form-group col-md-2">
+                <label>costo Generado</label>
+                <input type="text" ng-model="baja_r.costo_g" class="form-control" disabled>
                 <br>
-                <button type="button" ng-click="darBaja()" class="btn btn-primary">Aceptar</button>
+                <button type="button" ng-click="difDias()" class="btn btn-primary">Aceptar</button>
             </div>
         </div>
         <!-- FIN DE PARTE DAR DE BAJA -->
 
         <button type="button" class="btn btn-secondary" style="float: right"><a
-                    href="{{url('/habitaciones')}}">Regresar</a></button>
+                    href="{{url('/reservaciones')}}">Regresar</a></button>
         <!--<select ng-model="hola.xx" ng-options="x.nombrehab for x in data" class="form-control">
             <option value="">Selecciona una Habitacion</option>
         </select>-->
@@ -114,30 +121,112 @@
 
 
 <script src="{{asset('js/angular.js')}}" type="text/javascript"></script>
+<script src="{{asset('js/moment.js')}}" type="text/javascript"></script>
 </body>
 </html>
 <script>
-    var app = angular.module('app', []).controller('ctrl', function ($scope, $http) {
+    var app = angular.module('app', []).controller('ctrl', function ($scope, $http, $filter) {
         $scope.mostrartabla = true;
+        $scope.b;
         $scope.reservaciones;
-        //$scope.data = {!! json_encode($datos) !!};
+
+        $scope.habs = {!! json_encode($hab) !!};
+        console.log($scope.habs[0].preciohab);
 
         $scope.mandarBaja = function (datos) {
+            let fecha = new Date();
             $scope.mostrarbaja = true;
-            $scope.baja = datos;
+            $scope.mostrarUpdate = false;
+            $scope.datoss = datos;
+            console.log(fecha);
+            datos.inicioreserva = new Date($filter('date')($scope.datoss.inicioreserva));
+            datos.finreserva = new Date($filter('date')(fecha));
+            $scope.baja_r = datos;
+            if ($scope.baja_r.inicioreserva > fecha) {
+                $scope.fechafin = true;
+                $scope.b = 1;
+            } else {
+                $scope.fechafin = false;
+                $scope.b = 0;
+            }
+            console.log($scope.b);
+
+
         }
         $scope.mandarDatos = function (datos) {
             //$scope.mostrarbaja = true;
+
             $scope.mostrarUpdate = true;
-            //$scope.mostrartabla = false;
             $scope.mostrarbaja = false;
-            console.log(datos);
-            $scope.hab = datos;
-            $scope.habitaciones = $scope.hab.cantcuartos;
+            //$scope.mostrartabla = false;
+            //console.log(datos);
+            //$scope.hab = datos;
+            //$scope.habitaciones = $scope.hab.cantcuartos;
+            datos.inicioreserva = new Date($filter('date')(datos.inicioreserva));
+            datos.finreserva = new Date($filter('date')(datos.finreserva));
+            //$scope.min = new Date($filter('date')($scope.min));
+            $scope.res = datos;
+            $scope.fin = $scope.res.finreserva;
+            //$scope.minn="2019-04-18";
+            /*let dia,mes,ano;
+            dia = (datos.inicioreserva.getDate() + 1);
+            mes = (datos.inicioreserva.getMonth() + 1);
+            ano = datos.inicioreserva.getFullYear();
+            $scope.minn = ano + "-" + mes + "-" + dia;
+            $scope.minn = new Date($filter('date')($scope.minn));
+            console.log($scope.minn);*/
         }
 
+        ////////////////////////////////////////bajas
+        $scope.difDias = function () {
+            if (confirm("¿Desea continuar?")) {
+                if ($scope.b == 0) {
+                    let fecha1 = moment($scope.baja_r.inicioreserva);
+                    let fecha2 = moment($scope.baja_r.finreserva);
+                    $scope.diferencia = fecha2.diff(fecha1, 'days');
+                    console.log($scope.diferencia);
+                    $scope.baja_r.costo_g = $scope.diferencia * $scope.habs[$scope.baja_r.id_habitaciones - 1].preciohab;
+                    $scope.habs[$scope.baja_r.id_habitaciones - 1].cantcuartos++;
+                    console.log($scope.habs[$scope.baja_r.id_habitaciones - 1].cantcuartos);
+                    $http.post('/updatehab/' + $scope.baja_r.id_habitaciones, $scope.habs[$scope.baja_r.id_habitaciones - 1]).then(function (response) {
+                            $http.post('/bajaReserva/' + $scope.baja_r.id).then(
+                                function (response) {
+                                    console.log(response.status);
+                                    alert("costo generado por: " + $scope.baja_r.costo_g);
+                                    location.reload();
+                                },
+                                function (errorResponse) {
 
-        $scope.darBaja = function () {
+                                }
+                            );
+                        },
+                        function (errorResponse) {
+
+                        });
+                } else {
+                    alert("sin costos");
+                    $scope.habs[$scope.baja_r.id_habitaciones - 1].cantcuartos++;
+                    $http.post('/updatehab/' + $scope.baja_r.id_habitaciones, $scope.habs[$scope.baja_r.id_habitaciones - 1]).then(function (response) {
+                            $http.post('/bajaReserva/' + $scope.baja_r.id).then(
+                                function (response) {
+                                    console.log(response.status);
+                                },
+                                function (errorResponse) {
+
+                                }
+                            );
+                        },
+                        function (errorResponse) {
+
+                        });
+
+                }
+            }
+
+        }
+//////////////////////////////////////////////fin bajas
+
+        /*$scope.darBaja = function () {
             //console.log($scope.baja);
             if (confirm("¿Desea continuar?")) {
                 $scope.baja.cantcuartos--;
@@ -152,25 +241,47 @@
                 )
             }
 
-        }
-        $scope.actualizarHab = function () {
-            console.log($scope.habitaciones);
-            if ($scope.hab.cantcuartos < $scope.habitaciones) {
-                alert("la cantidad de cuartos es menor a la que se tenia")
-            } else {
+        }*/
+        $scope.calculoCosto = function(){
+            let fecha1 = moment($scope.res.inicioreserva);
+            let fecha2 = moment($scope.res.finreserva);
+            $scope.diferencia = fecha2.diff(fecha1, 'days');
+            console.log($scope.diferencia);
 
+            if($scope.diferencia<=0){
+                alert("el fin de reservacion es igual o menor al inicio");
+                $scope.res.finreserva = $scope.fin;
+                console.log($scope.fin);
+            }else{
+                if ($scope.res.habName!=undefined) {
+                    $scope.res.costo = $scope.diferencia * $scope.habs[$scope.res.habName.id - 1].preciohab;
+                    $scope.res.habitacionName = $scope.res.habName.nombrehab;
+                }else{
+                    console.log("no entro");
+                }
+
+            }
+        }
+        $scope.calculohab = function(){
+            console.log($scope.res.habName);
+        }
+
+
+
+        $scope.updateRes = function () {
+            //console.log($scope.habitaciones);
                 if (confirm("¿Desea continuar?")) {
-                    $http.post('/actualizarHab/' + $scope.hab.id, $scope.hab).then(
+                    $http.post('/updateRes/' + $scope.res.id, $scope.res).then(
                         function (response) {
                             console.log(response.status);
-                            alert("se a actualizado la habitacion: " + $scope.hab.nombrehab);
+                            alert("se a actualizado la reservacion de : " + $scope.res.nombre);
                             location.reload();
                         }, function (errorResponse) {
 
                         }
                     )
                 }
-            }
+
 
         }
 

@@ -20,8 +20,10 @@ class reservaciones extends Controller
     public function indexReservaciones()
     {
         $reservaciones = new reservacion();
+        $habitaciones = new habitacion();
         $datos = $reservaciones::all();
-        return view('mostrarReservacion', compact('datos'));
+        $hab = $habitaciones::all();
+        return view('mostrarReservacion', compact('datos','hab'));
     }
 
     /**
@@ -89,6 +91,11 @@ class reservaciones extends Controller
     public function update(Request $request, $id)
     {
         //
+        $reservaciones = reservacion::find($id);
+        $reservaciones->habitacionName = $request->habitacionName;
+        $reservaciones->finreserva = $request->finreserva;
+        $reservaciones->costo = $request->costo;
+        $reservaciones->save();
     }
 
     /**
@@ -99,6 +106,7 @@ class reservaciones extends Controller
      */
     public function destroy($id)
     {
-        //
+        $reservaciones = reservacion::find($id);
+        $reservaciones->delete();
     }
 }

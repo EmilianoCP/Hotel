@@ -24,7 +24,7 @@
             <div class="form-group col-md-6">
                 <label>Nombre de Habitacion</label>
                 <select ng-model="habitacion.nombrehab" ng-options="x.tipo for x in tipohab" class="form-control" required>
-                    <option value="" requi>Selecciona una Habitacion</option>
+                    <option value="" >Selecciona una Habitacion</option>
                 </select>
                 <span ng-show="frmLibro.select.$dirty && frmLibro.select.$error.required">Campo requerido</span>
                 <!--<input type="text" name="nombrehab" ng-model="habitacion.nombrehab" class="form-control" placeholder="nombre">-->
@@ -101,6 +101,7 @@
         }
 
         $scope.guardarhabitacion = function () {
+
 
             $scope.habitacion.nombrehab = $scope.habitacion.nombrehab.tipo;
             $scope.habitacion.tipocama = $scope.habitacion.tipocama.tipo;

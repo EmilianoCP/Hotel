@@ -21,5 +21,8 @@ Route::get('/showHabitaciones', 'habitaciones@indexHabitaciones');
 Route::get('/showReservaciones', 'reservaciones@indexReservaciones');
 Route::post('/saveHabitacion', 'habitaciones@store');
 Route::post('/saveReservaciones','reservaciones@store');
+Route::post('/updateRes/{id}', 'reservaciones@update');
+Route::post('/bajaReserva/{id}', 'reservaciones@destroy');
 Route::post('/darBaja/{id}', 'bajas@store');
 Route::post('/actualizarHab/{id}', 'habitaciones@update');
+Route::post('/updatehab/{id}', 'habitaciones@updateCuartos');
