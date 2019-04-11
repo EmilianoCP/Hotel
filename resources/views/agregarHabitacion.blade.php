@@ -17,14 +17,15 @@
     <br><br>
     <div class="container">
         <div class="container" style="background: #000000; padding: .2em;color: white;">
-        <h1>Agregar Habitaciones</h1>
+            <h1>Agregar Habitaciones</h1>
         </div>
         <br><br>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Nombre de Habitacion</label>
-                <select ng-model="habitacion.nombrehab" ng-options="x.tipo for x in tipohab" class="form-control" required>
-                    <option value="" >Selecciona una Habitacion</option>
+                <select ng-model="habitacion.nombrehab" ng-options="x.tipo for x in tipohab" class="form-control"
+                        required>
+                    <option value="">Selecciona una Habitacion</option>
                 </select>
                 <span ng-show="frmLibro.select.$dirty && frmLibro.select.$error.required">Campo requerido</span>
                 <!--<input type="text" name="nombrehab" ng-model="habitacion.nombrehab" class="form-control" placeholder="nombre">-->
@@ -61,9 +62,13 @@
             </div>
 
             <div class="form-group col-md-12">
-                <button type="button" ng-click="guardarhabitacion()"  class="btn btn-primary" ng-disabled="!frmLibro.$valid">Guardar</button>
-                <button type="button" class="btn btn-success"><a href="{{url('/showHabitaciones')}}">Mostrar Habitaciones</a></button>
-                <button type="button" class="btn btn-secondary" style="float: right"><a href="{{url('/')}}">Regresar</a></button>
+                <button type="button" ng-click="guardarhabitacion()" class="btn btn-primary"
+                        ng-disabled="!frmLibro.$valid">Guardar
+                </button>
+                <button type="button" class="btn btn-success"><a href="{{url('/showHabitaciones')}}">Mostrar
+                        Habitaciones</a></button>
+                <button type="button" class="btn btn-secondary" style="float: right"><a href="{{url('/')}}">Regresar</a>
+                </button>
             </div>
         </div>
     </div>
@@ -74,7 +79,7 @@
 </body>
 </html>
 <script>
-    var app = angular.module('app', []).controller('ctrl', function ($scope , $http) {
+    var app = angular.module('app', []).controller('ctrl', function ($scope, $http) {
         $scope.data = {!! json_encode($datos) !!};
         console.log($scope.data);
         $scope.tipohab = [
@@ -92,26 +97,29 @@
             {id: 5, tipo: "king size"}
         ];
 
-        for(var x=0; x < $scope.data.length; x++){
-            for(var y=0; y < $scope.tipohab.length; y++){
-                if($scope.data[x].nombrehab == $scope.tipohab[y].tipo){
-                    $scope.tipohab.splice(y,1);
+        for (var x = 0; x < $scope.data.length; x++) {
+            for (var y = 0; y < $scope.tipohab.length; y++) {
+                if ($scope.data[x].nombrehab == $scope.tipohab[y].tipo) {
+                    $scope.tipohab.splice(y, 1);
                 }
             }
         }
 
         $scope.guardarhabitacion = function () {
 
-
-            $scope.habitacion.nombrehab = $scope.habitacion.nombrehab.tipo;
-            $scope.habitacion.tipocama = $scope.habitacion.tipocama.tipo;
-            console.log($scope.habitacion);
-            $http.post('/saveHabitacion', $scope.habitacion).then(
-                function (response) {
-                    console.log(response.status);
-                    alert("la habitacion fue dada de alta con exito");
-                    location.reload();
-                })
+            if ($scope.habitacion.cantcuartos != 0 && $scope.habitacion.cantcamas != 0 && $scope.habitacion.precio != 0) {
+                $scope.habitacion.nombrehab = $scope.habitacion.nombrehab.tipo;
+                $scope.habitacion.tipocama = $scope.habitacion.tipocama.tipo;
+                console.log($scope.habitacion);
+                $http.post('/saveHabitacion', $scope.habitacion).then(
+                    function (response) {
+                        console.log(response.status);
+                        alert("la habitacion fue dada de alta con exito");
+                        location.reload();
+                    })
+            }else{
+                alert("cantidad de camas o cuartos invalido");
+            }
         }
 
 

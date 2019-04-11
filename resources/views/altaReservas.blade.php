@@ -102,7 +102,7 @@
             if (mes < 10)
                 mes = '0' + mes;
             $scope.minn="1869-00-00";
-            $scope.maxx= (ano-18) + "-" + mes + "-" + dia;
+            $scope.maxx= (ano-18) + "-" + mes + "-" + (dia-1);
             $scope.min= ano+ "-" + mes + "-" + dia;
         }
         $scope.maxMin();

@@ -151,8 +151,8 @@
         }
         $scope.actualizarHab = function () {
             console.log($scope.habitaciones);
-            if ($scope.hab.cantcuartos < $scope.habitaciones) {
-                alert("la cantidad de cuartos es menor a la que se tenia")
+            if ($scope.hab.cantcuartos < $scope.habitaciones || $scope.hab.cantcamas <= 0) {
+                alert("la cantidad de cuartos es menor a la que se tenia o las cantidad de camas es 0")
             } else {
 
                 if (confirm("¿Desea continuar?")) {

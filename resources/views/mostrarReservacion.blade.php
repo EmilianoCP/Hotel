@@ -142,12 +142,13 @@
             datos.inicioreserva = new Date($filter('date')($scope.datoss.inicioreserva));
             datos.finreserva = new Date($filter('date')(fecha));
             $scope.baja_r = datos;
-            if ($scope.baja_r.inicioreserva > fecha) {
-                $scope.fechafin = true;
-                $scope.b = 1;
-            } else {
+            if ($scope.baja_r.inicioreserva <= fecha) {
                 $scope.fechafin = false;
                 $scope.b = 0;
+            } else {
+
+                $scope.fechafin = true;
+                $scope.b = 1;
             }
             console.log($scope.b);
 
@@ -210,6 +211,7 @@
                             $http.post('/bajaReserva/' + $scope.baja_r.id).then(
                                 function (response) {
                                     console.log(response.status);
+                                    location.reload();
                                 },
                                 function (errorResponse) {
 
